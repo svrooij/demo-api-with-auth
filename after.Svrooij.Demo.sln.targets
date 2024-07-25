@@ -1,0 +1,6 @@
+<Project>
+ <Target Name="EmitCustomMessage" AfterTargets="Restore">
+   <Message Importance="High" Text="Like magic, the tools also get restored" />
+   <Exec Command="dotnet tool restore -v q" />
+ </Target>
+</Project>

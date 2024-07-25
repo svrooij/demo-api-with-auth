@@ -2,12 +2,15 @@
 
 This is a sample project that displays all the cool features I love about DOTNET. Including:
 
-- Minimal API
-- Token Authentication
-- OpenAPI Documentation
-- Swagger UI Documentation (with working token authentication)
-- Tests that actual test the API [test the api](#testing-the-api)]
-- Strongly typed Kiota client (that is generated automatically, if you installed kiota on your computer)
+- [x] Minimal API
+- [x] Token Authentication
+- [x] OpenAPI Documentation [generated at build time](#generate-openapi-specification)
+- [x] Swagger UI Documentation (with working token authentication)
+- [x] Tests that actual test the API [test the api](#testing-the-api)]
+- [ ] Strongly typed Kiota client (that is generated automatically, if you installed kiota on your computer)
+
+Follow along on [LinkedIn](https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop) for more updates.
+And while you're at it, let me know in the post what you think.
 
 ## Hosted DEMO
 
@@ -66,3 +69,15 @@ The factory can be used to get tokens and to create a `HttpClient` that is confi
 
 You are even able to *debug* the actual endpoint (only the success path) by setting a breakpoint in the `WeatherEndpoint` class and debugging the test. The unsuccessful path is also tested, but since those responses come from the Jwt middleware, you can't debug those.
 
+## Generate OpenAPI specification
+
+Most solutions generate the OpenAPI specification at **runtime**, but I prefer to generate them at **compile time** and to serve a static version. It won't change dynamically, but we are not using any dynamic endpoints anyway.
+
+The generated version can be found at `wwwroot/swagger/v1/swagger.json` and is served by the `app.UseStaticFiles()` middleware.`
+
+How does it work? Thanks to [this page](https://khalidabuhakmeh.com/generate-aspnet-core-openapi-spec-at-build-time) I got a great idea on how to make it work.
+In the [src/Svrooij.Demo.Api](./src/Svrooij.Demo.Api/Svrooij.Demo.Api.csproj) project file there is a new build target that runs the `SwashBuckle.AspNetCore.Cli` to generate the OpenAPI specification.
+
+There also is a target that restores the required tools after `restore`, making sure the tools is available when the build target runs.
+
+> And if you happen to call `dotnet restore` on the solution, it will also restore the tools for you, using the [after.{Solution}.sln.targets](./after.Svrooij.Demo.sln.targets) file.

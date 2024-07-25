@@ -15,6 +15,7 @@ var defaultScope = $"{builder.Configuration.GetValue<string>("JWT:TokenValidatio
 builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    swagger.AddServer(new OpenApiServer { Url = "/", Description = "Current server" });
     swagger.AddSecurityDefinition(securityName, new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -71,21 +72,26 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(swagger =>
-    {
-        // This will pre-fill the client id for easier login
-        swagger.OAuthClientId(builder.Configuration.GetValue<string>("Swagger:ClientId"));
-        swagger.OAuthAppName("Stephans' Demo API Client");
-        // Turn on PKCE for the swagger UI (single-page applications should always use PKCE)
-        swagger.OAuthUsePkce();
-        // Separate the scopes with a space
-        swagger.OAuthScopeSeparator(" ");
-        swagger.EnableTryItOutByDefault();
-        swagger.EnableDeepLinking();
-        swagger.EnablePersistAuthorization();
-    });
+    // Swagger is removed in favor of the generated OpenAPI document
+    //app.UseSwagger();
+    app.UseDeveloperExceptionPage();
 }
+app.UseStaticFiles();
+app.UseSwaggerUI(swagger =>
+{
+    // This will pre-fill the client id for easier login
+    swagger.OAuthClientId(builder.Configuration.GetValue<string>("Swagger:ClientId"));
+    swagger.OAuthAppName("Stephans' Demo API Client");
+    // Turn on PKCE for the swagger UI (single-page applications should always use PKCE)
+    swagger.OAuthUsePkce();
+    // Separate the scopes with a space
+    swagger.OAuthScopeSeparator(" ");
+    swagger.EnableTryItOutByDefault();
+    swagger.EnableDeepLinking();
+    swagger.EnablePersistAuthorization();
+    // Use the pre-generated OpenAPI document
+    swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API v1");
+});
 
 app.UseHttpsRedirection();
 
