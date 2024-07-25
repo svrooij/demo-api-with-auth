@@ -45,7 +45,9 @@ builder.Services
         // Bind the `JWT` section of the appsettings.json file to the options
         // Meaning we can now configure how the JWT should be validated in the appsettings.json file
         builder.Configuration.Bind("JWT", options);
-
+        // Normally you would want to require https, no matter what the configuration says (security tip!!)
+        // but to be able to easily override this in the tests, we will not set it here.
+        //options.RequireHttpsMetadata = true;
         // Add settings you don't want to be configurable in the appsettings.json file here
         options.TokenValidationParameters.RequireAudience = true;
         options.TokenValidationParameters.RequireExpirationTime = true;
@@ -142,7 +144,12 @@ app.MapGet("/claims", (ClaimsPrincipal user) =>
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+// Add this to your Program.cs file to make the class public
+public partial class Program { }
+
+// This is the model that will be returned by the weather endpoint
+// We want to use it in the tests, so we need to make it public
+public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }

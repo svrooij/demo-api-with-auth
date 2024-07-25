@@ -6,7 +6,7 @@ This is a sample project that displays all the cool features I love about DOTNET
 - Token Authentication
 - OpenAPI Documentation
 - Swagger UI Documentation (with working token authentication)
-- Tests that actual test the API
+- Tests that actual test the API [test the api](#testing-the-api)]
 - Strongly typed Kiota client (that is generated automatically, if you installed kiota on your computer)
 
 ## Hosted DEMO
@@ -50,3 +50,19 @@ Open the `appsettings.json` file in your project and fill the folling values:
 - `JWT:TokenValidationParameters:ValidAudience` with the `Application ID URI` from the API registration, and the Application id (without the `api://` part). Do NOT change the order of the values!
 - `Swagger:ClientId` with the `Application (client) ID` from the client registration.
 - `Swagger:Scope` with the scope you created in the API registration (if you picked another name).
+
+## Testing the API
+
+Since we now have an api that is protected with tokens from Entra ID, we need a way to get those tokens from our test project. Preferably without creating credentials in Entra ID itself, and having to manage those tokens in our test project.
+
+This is where [IdentityProxy](https://github.com/svrooij/identityproxy/) comes in. It's a simple project that runs a webservice in a docker container which we configure to emulate tokens as if they came from Entra ID. More details can be found in [this blog post](https://svrooij.io/2024/07/10/integration-tests-protected-api/).
+
+### Svrooij.Demo.Api.Tests
+
+In the test project you'll find a `MinimalApiServiceFactory` this is using the `WebApplicationFactory` from the `Microsoft.AspNetCore.Mvc.Testing` package to start the API in a test environment. It also starts the `IdentityProxy` in a docker container, and configures the API to use the proxy as the token issuer.
+This class is then injected in the `WeatherEndpoint.Tests` class to test the API.
+
+The factory can be used to get tokens and to create a `HttpClient` that is configured for the API.
+
+You are even able to *debug* the actual endpoint (only the success path) by setting a breakpoint in the `WeatherEndpoint` class and debugging the test. The unsuccessful path is also tested, but since those responses come from the Jwt middleware, you can't debug those.
+
