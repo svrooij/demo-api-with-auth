@@ -6,8 +6,8 @@ This is a sample project that displays all the cool features I love about DOTNET
 - [x] Token Authentication
 - [x] OpenAPI Documentation [generated at build time](#generate-openapi-specification)
 - [x] Swagger UI Documentation (with working token authentication)
-- [x] Tests that actual test the API [test the api](#testing-the-api)]
-- [ ] Strongly typed Kiota client (that is generated automatically, if you installed kiota on your computer)
+- [x] Tests that actual test the API [test the api](#testing-the-api)
+- [x] Strongly typed API client using Kiota [generated at build time](#kiota)
 
 Follow along on [LinkedIn](https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop) for more updates.
 And while you're at it, let me know in the post what you think.
@@ -81,3 +81,19 @@ In the [src/Svrooij.Demo.Api](./src/Svrooij.Demo.Api/Svrooij.Demo.Api.csproj) pr
 There also is a target that restores the required tools after `restore`, making sure the tools is available when the build target runs.
 
 > And if you happen to call `dotnet restore` on the solution, it will also restore the tools for you, using the [after.{Solution}.sln.targets](./after.Svrooij.Demo.sln.targets) file.
+
+## Kiota
+
+The Kiota CLI is configured to generate a strongly typed client for the API. The client is generated in the [src/Svrooij.Demo.Client](./src/Svrooij.Demo.Client) project.
+It's generated in the `Generated` folder, using some cleaver msbuild tricks, the main ingredient is the `CollectPackageReferences` that is used as `BeforeTargets`.
+Meaning this target is run at the very moment the project is loaded.
+
+The `Generated` folder is also added to the `.gitignore` file, so the client is always freshly generated.
+And if you want to regenerate the client, you can just delete the folder and within seconds it's back.
+The folder is also deleted when you call `clean`.
+
+In the client project, you will also find some handy extension methods to use the Kiota generated client with [dependency injection](https://svrooij.io/2024/07/03/kiota-dependency-injection/).
+
+## Contributing
+
+Want to contribute something to this demo project? Let's make it even better! Or lets [discuss](https://github.com/svrooij/demo-api-with-auth/discussions) improvements.

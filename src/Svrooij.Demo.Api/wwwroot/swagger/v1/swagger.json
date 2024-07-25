@@ -2,6 +2,16 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Demo API",
+    "description": "Demo api showing all kind of cool dotnet stuff, check it out at <a href=\"https://github.com/svrooij/demo-api-with-auth/\">github</a> or let me know on <a href=\"https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop\">LinkedIn</a> what you think.<br/><br/>Yes, I know, a weather forcast is boring, that is not the point.",
+    "termsOfService": "https://github.com/svrooij/demo-api-with-auth?tab=readme-ov-file",
+    "contact": {
+      "name": "Stephan van Rooij",
+      "url": "https://svrooij.io"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/svrooij/demo-api-with-auth?tab=MIT-1-ov-file"
+    },
     "version": "v1"
   },
   "servers": [
@@ -32,6 +42,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -65,6 +78,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [

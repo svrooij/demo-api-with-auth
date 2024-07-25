@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Svrooij.Demo.Api;
 using System.Security.Claims;
@@ -14,7 +13,22 @@ var securityName = "Bearer";
 var defaultScope = $"{builder.Configuration.GetValue<string>("JWT:TokenValidationParameters:ValidAudiences:0")}/{builder.Configuration.GetValue<string>("Swagger:Scope")}";
 builder.Services.AddSwaggerGen(swagger =>
 {
-    swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    swagger.SwaggerDoc("v1", new OpenApiInfo {
+        Title = "Demo API",
+        Version = "v1",
+        Description = "Demo api showing all kind of cool dotnet stuff, check it out at <a href=\"https://github.com/svrooij/demo-api-with-auth/\">github</a> or let me know on <a href=\"https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop\">LinkedIn</a> what you think.<br/><br/>Yes, I know, a weather forcast is boring, that is not the point.",
+        Contact = new OpenApiContact
+        {
+            Name = "Stephan van Rooij",
+            Url = new Uri("https://svrooij.io")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "MIT",
+            Url = new Uri("https://github.com/svrooij/demo-api-with-auth?tab=MIT-1-ov-file")
+        },
+        TermsOfService = new Uri("https://github.com/svrooij/demo-api-with-auth?tab=readme-ov-file")
+    });
     swagger.AddServer(new OpenApiServer { Url = "/", Description = "Current server" });
     swagger.AddSecurityDefinition(securityName, new OpenApiSecurityScheme
     {
@@ -56,6 +70,13 @@ builder.Services
         // Don't validate the issuer, we want to have a multi-tenant application
         options.TokenValidationParameters.ValidateIssuer = false;
         options.TokenValidationParameters.ValidateIssuerSigningKey = true;
+        //options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        //{
+        //    OnMessageReceived = context =>
+        //    {
+        //        return Task.CompletedTask;
+        //    }
+        //};
     });
 
 builder.Services.AddAuthorization(options =>

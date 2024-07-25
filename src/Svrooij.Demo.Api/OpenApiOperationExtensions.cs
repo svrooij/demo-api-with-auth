@@ -27,6 +27,7 @@ internal static class OpenApiOperationExtensions
                 }, [scope, ..extraScopes]
             }
         });
+        operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
 
         return operation;
     }
