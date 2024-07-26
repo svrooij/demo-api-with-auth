@@ -1,6 +1,7 @@
 <Project>
- <Target Name="EmitCustomMessage" AfterTargets="Restore">
-   <Message Importance="High" Text="Like magic, the tools also get restored" />
-   <Exec Command="dotnet tool restore -v q" />
- </Target>
+  <Target Name="RestoreTools"  AfterTargets="Restore" Outputs=".vs/tools_restored.txt">
+    <Message Importance="High" Text="Like magic, the tools also get restored" Condition="!Exists('.vs/tools_restored.txt')" />
+    <Exec Command="dotnet tool restore -v q" Condition="!Exists('.vs/tools_restored.txt')" />
+    <WriteLinesToFile File=".vs/tools_restored.txt" Lines="Tools were automatically restored, this file is just to keep track of that." Condition="!Exists('.vs/tools_restored.txt')" />
+  </Target>
 </Project>

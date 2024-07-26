@@ -8,6 +8,9 @@ This is a sample project that displays all the cool features I love about DOTNET
 - [x] Swagger UI Documentation (with working token authentication)
 - [x] Tests that actual test the API [test the api](#testing-the-api)
 - [x] Strongly typed API client using Kiota [generated at build time](#kiota)
+- [ ] Open Telemetry integrated
+- [ ] Health checks
+- [ ] Aspire dashboard (standalone) integration
 
 Follow along on [LinkedIn](https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop) for more updates.
 And while you're at it, let me know in the post what you think.
@@ -21,7 +24,7 @@ This project will be hosted on Azure, you can check it out here....
 The API is protected with a tokens from Entra ID. I got an API and a client app registered to get you started, but you'll need to do some setup yourself if you want to try this with your own app.
 
 1. Clone the repository
-1. Create [Entra ID API registration](#entra-id-api-registration)]
+1. Create [Entra ID API registration](#entra-id-api-registration)
 1. Create [Entra ID client registration](#entra-id-client-registration)
 1. Fill in the [appsettings.json](#appsettings)
 

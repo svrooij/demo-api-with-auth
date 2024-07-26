@@ -14,21 +14,24 @@
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
 
+  <Target Name="RestoreTools"  Outputs="../../.vs/tools_restored.txt">
+    <Exec Command="dotnet tool restore -v q" Condition="!Exists('../../.vs/tools_restored.txt')" />
+    <WriteLinesToFile File="../../.vs/tools_restored.txt" Lines="Tools were automatically restored, this file is just to keep track of that." Condition="!Exists('../../.vs/tools_restored.txt')" />
+  </Target>
+
   <Target Name="GenerateRestClient" DependsOnTargets="CleanGenerateRestClient;AutoGenerateRestClient" />
   <Target Name="CleanGenerateRestClient" AfterTargets="CoreClean">
     <RemoveDir Directories="Generated" />
   </Target>
 
-  <Target Name="AutoGenerateRestClient" BeforeTargets="CollectPackageReferences" Outputs="Generated/DemoClient.cs">
-    <Message Text="Genering REST Client" Importance="High" Condition="!Exists('./Generated/DemoClient.cs')" />
-	<!-- Can we check if the tool is already restored, that would be even better!-->
-	<Exec Command="dotnet tool restore -v q" Condition="!Exists('./Generated/DemoClient.cs')" />
-	<Exec Command="kiota generate --ll Error -l CSharp -c DemoClient -n Svrooij.Demo.Client -d ../Svrooij.Demo.Api/wwwroot/swagger/v1/swagger.json -o ./Generated --serializer Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory --deserializer Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory" Condition="!Exists('./Generated/DemoClient.cs')" />
-	<OnError ExecuteTargets="ClientGenerationError" />
+  <Target Name="AutoGenerateRestClient" BeforeTargets="CollectPackageReferences" Outputs="Generated/DemoClient.cs" DependsOnTargets="RestoreTools">
+    <Message Text="Genering REST Client" Importance="High" Condition="!Exists('./Generated/DemoClient.cs')" />    
+    <Exec Command="kiota generate --ll Error -l CSharp -c DemoClient -n Svrooij.Demo.Client -d ../Svrooij.Demo.Api/wwwroot/swagger/v1/swagger.json -o ./Generated --serializer Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory --deserializer Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory" Condition="!Exists('./Generated/DemoClient.cs')" />
+    <OnError ExecuteTargets="ClientGenerationError" />
   </Target>
 
   <Target Name="ClientGenerationError">
-	<Error Text="DemoClient could not be generated" />
+	  <Error Text="DemoClient could not be generated" />
   </Target>
 
 </Project>
