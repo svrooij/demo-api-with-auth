@@ -4,6 +4,8 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddSensibleDefault();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -168,6 +170,8 @@ app.MapGet("/claims", (ClaimsPrincipal user) =>
     operation.AddSecurityRequirement(securityName, defaultScope, "openid");
     return operation;
 });
+
+app.MapHealthCheckEndpoints();
 
 app.Run();
 

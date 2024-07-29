@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Svrooij.Demo.Api.Tests", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Svrooij.Demo.Client", "src\Svrooij.Demo.Client\Svrooij.Demo.Client.csproj", "{FCA613A9-6C19-489B-B30A-D009A2DF51B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Svrooij.Demo.Client.Tests", "tests\Svrooij.Demo.Client.Tests\Svrooij.Demo.Client.Tests.csproj", "{D415C72C-28F8-4A29-BCBA-D29B504421DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Svrooij.Demo.Client.Tests", "tests\Svrooij.Demo.Client.Tests\Svrooij.Demo.Client.Tests.csproj", "{D415C72C-28F8-4A29-BCBA-D29B504421DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

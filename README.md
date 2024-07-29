@@ -8,9 +8,9 @@ This is a sample project that displays all the cool features I love about DOTNET
 - [x] Swagger UI Documentation (with working token authentication)
 - [x] Tests that actual test the API [test the api](#testing-the-api)
 - [x] Strongly typed API client using Kiota [generated at build time](#kiota)
-- [ ] Open Telemetry integrated
-- [ ] Health checks
-- [ ] Aspire dashboard (standalone) integration
+- [x] Open Telemetry integrated
+- [x] Health checks
+- [x] Aspire dashboard (standalone) integration
 
 Follow along on [LinkedIn](https://www.linkedin.com/posts/stephanvanrooij_github-svrooijdemo-api-with-auth-a-demo-activity-7222324418478325760-2SGI?utm_source=share&utm_medium=member_desktop) for more updates.
 And while you're at it, let me know in the post what you think.
@@ -96,6 +96,27 @@ And if you want to regenerate the client, you can just delete the folder and wit
 The folder is also deleted when you call `clean`.
 
 In the client project, you will also find some handy extension methods to use the Kiota generated client with [dependency injection](https://svrooij.io/2024/07/03/kiota-dependency-injection/).
+
+## Observability
+
+The API is configured to use OpenTelemetry (if you set the `OTEL_EXPORTER_OTLP_ENDPOINT` to the correct value). By default the exporter is disabled, but you can enable it by setting the environment variable.
+You can also change the endpoint to something that suits your needs.
+
+### Aspire Dashboard
+
+If you want a quick and easy way to view the telemetry data, you can use the [Aspire Dashboard](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/dashboard/standalone?wt.mc_id=SEC-MVP-5004985), which you can run as a standalone container in docker.
+
+The following command will run the Aspire Dashboard in a container, and exposes the OTEL endpoint at `localhost:4317` and the dashboard at `localhost:18888`.
+
+```ps1
+docker run --rm -it `
+    -p 18888:18888 `
+    -p 4317:18889 -d `
+    --name aspire-dashboard `
+    mcr.microsoft.com/dotnet/nightly/aspire-dashboard:8.1
+```
+
+I'm definitly not suggesting you should not look at Aspire, but if you don't want to modify your project and it's not a distributed system, you might as well just use the dashboard, and not the fully fleshed aspire distributed host.
 
 ## Contributing
 
